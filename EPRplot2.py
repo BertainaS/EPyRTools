@@ -14,7 +14,7 @@ from numpy.fft import fft, fftshift, fftfreq, fft2
 #from scipy.fftpack import fft,fftfreq, fftshift
 from scipy.optimize import curve_fit
 
-def biexp(x, a1, b1, c):
+def monoexp(x, a1, b1, c):
     
     return a1 * exp(-x/b1) +c
 
