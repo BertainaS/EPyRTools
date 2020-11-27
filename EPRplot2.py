@@ -13,9 +13,34 @@ from numpy import log,cumsum, reshape, zeros, kaiser,hamming, exp, shape, append
 from numpy.fft import fft, fftshift, fftfreq, fft2
 #from scipy.fftpack import fft,fftfreq, fftshift
 from scipy.optimize import curve_fit
+import copy
+
+def plot2D(x,y,z,parm,cmap='inferno',blCorrection=False,integrate=False,vmax=None,vmin=None):
+    if type(z)==tuple:
+        z=z[0].T
+    try:
+        parm['SSY'] 
+        if parm["JEY"]=='angle-sweep':
+            EPRAngle2D(x,z,parm,y,cmap=cmap, integrate=integrate, vmin=vmin, vmax=vmax)
+        elif parm["JEY"]=='power-sweep':
+            print('faire le plot en puissance 2D')
+    except KeyError:
+        if blCorrection==True:
+            YPTS = int(parm['YPTS'])
+            for k in range(YPTS):
+                z[k] = baselineCorrection(x, z[k], 1)
+        plt.imshow(z, interpolation='quadric', aspect='auto', origin='lower',
+               extent=[x[0], x[-1], y[0], y[-1]],cmap=cmap,vmin=vmin,vmax=vmax)
+        plt.title(parm['namefile'])
+        if parm['YNAM']=='Field':
+            plt.ylabel('Magnetic field (G)')
+        plt.xlabel('Time (ns)')
+        pass
+    return 
+
+
 
 def monoexp(x, a1, b1, c):
-    
     return a1 * exp(-x/b1) +c
 
 def plotCW(x, y, par=None, lw=None, color=None):
@@ -39,8 +64,8 @@ def baselineCorrection(x, y, deg=1):
     return corrected
 
 def baselineCorrectionExp(x, y,p0):
-    popt, pcov = curve_fit(biexp, x, y,p0=p0)
-    baseline = biexp(x,*popt)
+    popt, pcov = curve_fit(monoexp, x, y,p0=p0)
+    baseline = monoexp(x,*popt)
     corrected = y - baseline
     return corrected
 
@@ -50,15 +75,18 @@ def baseline(x, y):
     corrected = corrected-corrected[0]
     return corrected
 
-def EPRAngle2D(x, y, par, angle, cmap='viridis', vmax=None, integrate=False):
+def EPRAngle2D(x, y, par, angle, cmap='viridis', vmin=None, vmax=None, integrate=False):
+    yp=copy.deepcopy(y)
     for k in range(len(angle)):
-        y[k] = baseline(x, y[k])
+        yp[k] = baselineCorrection(x, yp[k])
         if integrate:
-            y[k] = cumsum(y[k])
-    plt.imshow(y.T, interpolation='quadric', aspect='auto', origin='lower',
-               extent=[angle[0], angle[-1], par['XXLB'], par['XXLB'] + par['XXWI']], vmax=vmax, cmap=cmap)
+            yp[k] = cumsum(yp[k])
+    plt.imshow(yp.T, interpolation='quadric', aspect='auto', origin='lower',
+               extent=[angle[0], angle[-1], par['XXLB'], par['XXLB'] + par['XXWI']], vmin=vmin, vmax=vmax, cmap=cmap)
     plt.xlabel('Angle (deg)')
     plt.ylabel('Magnetic Field (G)')
+    plt.title(par['namefile'])
+    return None
 
 
 # def plotTime(time, re, im=None, par=None, baselinecorr=True, blcdeg=1):
@@ -113,10 +141,11 @@ def plotAngleGfac(angle, geff, par=None, color=None, label=None):
     
 
 def plotTime2D(time, z, par, xmin=0, xmax=100, cmap='viridis', vmax=None):
+    zp=copy.deepcopy(z)
     YPTS = int(par['YPTS'])
     for k in range(YPTS):
-        z[k] = baselineCorrection(time, z[k], 1)
-    plt.imshow(z.T, interpolation='quadric', aspect='auto', origin='lower',
+        zp[k] = baselineCorrection(time, zp[k], 1)
+    plt.imshow(zp.T, interpolation='quadric', aspect='auto', origin='lower',
                extent=[xmin, xmax, time[0], time[-1]], vmax=vmax, cmap=cmap)
     plt.title(par['namefile'])
     plt.ylabel('Time (ns)')
@@ -152,14 +181,15 @@ def plotFFT1D(x, y, par=None, lw=None, color=None, baselinecorr=True, blcdeg=1, 
 def plotFFT2D(time, z, par, xmin=0, xmax=100, cmap='viridis', vmin=None,vmax=None, xlab = 'Detuning (MHz)'):
     if type(z)==tuple:
         z=z[0].T
+    zp=copy.deepcopy(z)
     ampFFT = zeros(z.shape)
     ampFFT = append(ampFFT, ampFFT, axis=1)
-    windows = kaiser(len(time), 2)
-    #window = kaiser(2*len(time), 3)
-    #windows = window[len(time)-1:-1]
+    #windows = kaiser(len(time), 3)
+    window = kaiser(2*len(time), 3)
+    windows = window[len(time)-1:-1]
 
-    for i in range(z.shape[0]):
-        amp = baselineCorrection(time, z[i], 6)
+    for i in range(zp.shape[0]):
+        amp = baselineCorrection(time, zp[i], 10)
         #amp = baselineCorrectionExp(time, z[i],[1e1,1e3,1e2])
         amp *= windows
         ampl = append(amp, zeros(len(time)))
@@ -256,22 +286,3 @@ def plot1D(x,y,parm,blCorrection=False):
     except KeyError:
         print('erreur dans plot1D')
 
-def plot2D(x,y,z,parm,cmap='inferno',blCorrection=False):
-    if type(z)==tuple:
-        z=z[0].T
-    try:
-        parm['SSY'] 
-        if parm["JEY"]=='angle-sweep':
-            EPRAngle2D(x,z,parm,y,cmap='inferno', integrate=True)
-        elif parm["JEY"]=='power-sweep':
-            print('faire le plot en puissance 2D')
-    except KeyError:
-        if blCorrection==True:
-            YPTS = int(parm['YPTS'])
-            for k in range(YPTS):
-                z[k] = baselineCorrection(x, z[k], 1)
-        plt.imshow(z, interpolation='quadric', aspect='auto', origin='lower',
-               extent=[x[0], x[-1], y[0], y[-1]],cmap=cmap)
-        plt.title(parm['namefile'])
-        plt.ylabel('Time (ns)')
-        pass

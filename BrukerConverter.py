@@ -21,19 +21,24 @@ from pathlib import Path
 
 from itertools import zip_longest
 
-def BrukerListFile_0(PATH):
+# def BrukerListFile_0(PATH):
  
-    filelist=[]
-    for file in os.listdir(PATH):
-        if fnmatch.fnmatch(file, '*.dta') or fnmatch.fnmatchcase(file, '*.spc') or fnmatch.fnmatch(file, '*.DTA') or fnmatch.fnmatchcase(file, '*.SPC'):
-            full_path = os.path.join(PATH, file)
-            filelist.append(full_path)
-            filelist.sort()
-    return filelist
+#     filelist=[]
+#     for file in os.listdir(PATH):
+#         if fnmatch.fnmatch(file, '*.dta') or fnmatch.fnmatchcase(file, '*.spc') or fnmatch.fnmatch(file, '*.DTA') or fnmatch.fnmatchcase(file, '*.SPC'):
+#             full_path = os.path.join(PATH, file)
+#             filelist.append(full_path)
+#             filelist.sort()
+#     return filelist
 
-def BrukerListFile(PATH,Recursive=False):
-      
-    exts = [".dsc",".DSC",".DTA",".dta",".spc",".SPC",".par",".PAR"]
+def BrukerListFiles(PATH,Recursive=False):
+    """List all SPC (EMX) and DTA (Elixys) files in the PATH.  
+
+    Args:
+        PATH ([str]): path of the folder containing the Bruker files.
+        Recursive (bool, optional): [to check the folder and subfolders]. Defaults to False.
+    """      
+    exts = [".DTA",".dta",".spc",".SPC"]
     if Recursive:
         files = [p for p in Path(PATH).rglob('*') if p.suffix in exts]
     else:
@@ -46,7 +51,7 @@ def readEPR(file):
     try:
         with open(filetmp+'.dta'):
             pass
-        print('elixis file')
+        print('elyxis file')
         parm = parameters_read_Elixys(file)
         try:
             parm['YPTS']
