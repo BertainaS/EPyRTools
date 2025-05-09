@@ -140,6 +140,7 @@ def plot_2d_map(
     ax=None,
     title="2D Spectral Map",
     cmap_name='viridis',
+    renormed=True,
     shading='auto'
 ):
     """
@@ -175,6 +176,9 @@ def plot_2d_map(
     # pcolormesh typically wants X, Y to define the corners of the cells.
     # If x_axis_data and y_axis_data define cell centers, one might need to adjust.
     # For now, assume they define the coordinates for the values in spectral_data_2d.
+    if renormed==True:
+        spectral_data_2d=spectral_data_2d/np.max(spectral_data_2d)
+    
     im = ax.pcolormesh(
         x_axis_data,
         y_axis_data,
