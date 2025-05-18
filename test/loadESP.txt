@@ -56,8 +56,7 @@ def load(full_base_name: Path, file_extension: str, scaling: str) -> tuple:
         try:
              n_anz = int(parameters['ANZ'])
              if not two_d:
-                 if file_type == 'c':
-                     file_type='p' # Assume pulse if ANZ present and not 2D
+                 file_type = 'p' # Assume pulse if ANZ present and not 2D
                  nx = n_anz // 2 if is_complex else n_anz
              # Consistency check if 2D will happen later
         except (ValueError, TypeError):
@@ -113,8 +112,8 @@ def load(full_base_name: Path, file_extension: str, scaling: str) -> tuple:
     elif file_type in ['c', 'p']: # ESP CW or Pulse
         number_format_code = 'i4'
     else:
-        number_format_code = 'f4' # Default fallback
-        warnings.warn(f"Unclear file type '{file_type}', assuming int32 (f4) data format.")
+        number_format_code = 'i4' # Default fallback
+        warnings.warn(f"Unclear file type '{file_type}', assuming int32 (i4) data format.")
 
     # --- Construct Abscissa ---
     abscissa = None
@@ -210,7 +209,6 @@ def load(full_base_name: Path, file_extension: str, scaling: str) -> tuple:
     dimensions = [nx, ny, 1] # Use [nx, ny, nz=1] for get_matrix
 
     # --- Read Data File ---
-    print(file_type)
     data = get_matrix(spc_file, dimensions, number_format_code, endian, is_complex)
 
     # --- Scale Data ---

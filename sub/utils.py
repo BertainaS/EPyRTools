@@ -44,6 +44,14 @@ def read_par_file(par_file_path: Path) -> dict:
                 parameters[key] = value
     except Exception as e:
         raise IOError(f"Error reading PAR file {par_file_path}: {e}") from e
+        
+    if parameters.get('JEX'): parameters['XAXIS_NAME'] = parameters['JEX']
+    if parameters.get('JUN'): parameters['XAXIS_UNIT'] = parameters['JUN']
+    if parameters.get('XXUN'): parameters['XAXIS_UNIT'] = parameters['XXUN']
+    if parameters.get('JEY'): parameters['YAXIS_NAME'] = parameters['JEY']
+    if parameters.get('XYUN'): parameters['YAXIS_UNIT'] = parameters['XYUN']
+    
+           
 
     return parameters
 
@@ -101,7 +109,10 @@ def read_dsc_file(dsc_file_path: Path) -> dict:
         #     key = re.sub(r'\W|^(?=\d)', '_', key)
 
         parameters[key] = value
-
+    if parameters.get('XNAM'):
+        parameters['XAXIS_NAME'] = parameters['XNAM']
+        parameters['XAXIS_UNIT'] = parameters['XUNI']
+        
     return parameters
 
 

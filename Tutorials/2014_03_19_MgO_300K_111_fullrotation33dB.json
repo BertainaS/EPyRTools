@@ -1,0 +1,145 @@
+{
+    "original_file": "/Users/sylvainbertaina/Documents/Cloud_CNRS/GitHub/EPyRTools/Tutorials/2014_03_19_MgO_300K_111_fullrotation33dB.par",
+    "fair_metadata": {
+        "conversion_info": {
+            "value": {
+                "converter_script": "fair_converter.py",
+                "conversion_timestamp": "2025-05-12T23:17:42.530281",
+                "eprload_version": "unknown"
+            },
+            "unit": "",
+            "description": "Information about the conversion process to FAIR format."
+        },
+        "operating_system_esp": {
+            "value": "Format",
+            "unit": "",
+            "description": "Indicates file origin (DOS/Windows vs Unix) affecting endianness (ESP)."
+        },
+        "total_points_esp": {
+            "value": 75776,
+            "unit": "points",
+            "description": "Total number of data points in the file (ESP). Useful for consistency check."
+        },
+        "status_flags_esp": {
+            "value": 4096,
+            "unit": "",
+            "description": "Job and Spectrometer Status flags (bit-encoded) (ESP). Indicates complex, 2D, etc."
+        },
+        "scanned_size_x_esp": {
+            "value": 2048,
+            "unit": "points",
+            "description": "Number of points acquired along X dimension (ESP, often pulse)."
+        },
+        "scanned_size_y_esp": {
+            "value": 37,
+            "unit": "points",
+            "description": "Number of points acquired along Y dimension (ESP, often pulse)."
+        },
+        "pulse_axis_x_start_esp": {
+            "value": 3000.0,
+            "unit": "unit_from_XXUN",
+            "description": "Start value for X axis in pulse experiments (ESP)."
+        },
+        "pulse_axis_x_width_esp": {
+            "value": 700.0,
+            "unit": "unit_from_XXUN",
+            "description": "Width/range for X axis in pulse experiments (ESP)."
+        },
+        "pulse_axis_y_start_esp": {
+            "value": 0.0,
+            "unit": "unit_from_XYUN",
+            "description": "Start value for Y axis in 2D pulse experiments (ESP)."
+        },
+        "pulse_axis_y_width_esp": {
+            "value": 180.0,
+            "unit": "unit_from_XYUN",
+            "description": "Width/range for Y axis in 2D pulse experiments (ESP)."
+        },
+        "pulse_axis_x_unit_esp": {
+            "value": "G",
+            "unit": "",
+            "description": "Unit for X axis in pulse experiments (ESP)."
+        },
+        "pulse_axis_y_unit_esp": {
+            "value": "deg",
+            "unit": "",
+            "description": "Unit for Y axis in pulse experiments (ESP)."
+        },
+        "experiment_type_esp": {
+            "value": "field-sweep",
+            "unit": "",
+            "description": "Primary experiment type declared in ESP (e.g., 'field-sweep', 'ENDOR', 'time-sweep')."
+        },
+        "experiment_axis_y_esp": {
+            "value": "angle-sweep",
+            "unit": "",
+            "description": "Parameter varied along the Y-axis in ESP (e.g., 'frequency-sweep', 'mw-power-sweep')."
+        },
+        "resolution_x_esp": {
+            "value": 2048,
+            "unit": "points",
+            "description": "Number of points along the X axis (older ESP name)."
+        },
+        "resolution_y_esp": {
+            "value": 37,
+            "unit": "points",
+            "description": "Number of points along the Y axis (older ESP name)."
+        },
+        "num_scans_done": {
+            "value": 1,
+            "unit": "",
+            "description": "Number of scans *actually performed* (ESP)."
+        },
+        "field_center": {
+            "value": 3350.0,
+            "unit": "G",
+            "description": "Center magnetic field for the sweep (ESP)."
+        },
+        "field_sweep_width": {
+            "value": 700.0,
+            "unit": "G",
+            "description": "Magnetic field sweep width (ESP). Total range = HSW."
+        },
+        "conversion_time": {
+            "value": 20.48,
+            "unit": "ms",
+            "description": "ADC conversion time per point (ESP)."
+        },
+        "receiver_time_constant": {
+            "value": 10.24,
+            "unit": "s",
+            "description": "Receiver time constant (filter setting) (BES3T)."
+        },
+        "receiver_gain_counts": {
+            "value": 31697.86,
+            "unit": "",
+            "description": "Receiver gain setting (ESP, often linear arbitrary counts)."
+        },
+        "receiver_mode": {
+            "value": 1.0,
+            "unit": "",
+            "description": "Receiver mode (e.g., Quadrature, In-Phase)."
+        },
+        "modulation_frequency": {
+            "value": 9.399263,
+            "unit": "Hz",
+            "description": "Field modulation frequency setting."
+        },
+        "microwave_power_at_sample": {
+            "value": 0.1001,
+            "unit": "mW",
+            "description": "Microwave power *estimated* at the sample (ESP/WinEPR). Often calculated based on bridge attenuation and source power. Calibration is usually required for accuracy."
+        }
+    },
+    "unmapped_parameters": {
+        "MIN": -20505.589844,
+        "MAX": 24769.074219,
+        "JON": "Bruker BioSpin GmbH",
+        "JDA": "19-Mar-2014",
+        "JTM": "11:09",
+        "JRE": "c:\\program files\\bruker emx\\syscal_old\\emx1240\\er4102st\\4102st130710.cal",
+        "MPD": 33.0,
+        "GAN": 0.0,
+        "GANS": 5.0
+    }
+}

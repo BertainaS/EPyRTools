@@ -1,5 +1,5 @@
 # eprload.py
-
+import sys
 import os
 from pathlib import Path
 import tkinter as tk
@@ -31,31 +31,36 @@ def eprload(file_name=None, scaling="", plot_if_possible=True):
     """
     Load experimental EPR data from Bruker BES3T or ESP formats.
 
+   
     Args:
-        file_name (str or Path, optional): Path to the data file (.dta, .dsc, .spc, .par) or a directory.
-            If None or a directory, a file browser is shown. Defaults to None (opens browser in cwd).
-        scaling (str, optional): String of characters specifying scaling operations (only for Bruker files).
-            Each character enables a scaling operation:
-                'n': Divide by number of scans (AVGS/JSD).
-                'P': Divide by sqrt of MW power in mW (MWPW/MP).
-                'G': Divide by receiver gain (RCAG/RRG).
-                'T': Multiply by temperature in Kelvin (STMP/TE).
-                'c': Divide by conversion/sampling time in ms (SPTP/RCT).
-            Defaults to "" (no scaling).
-        plot_if_possible (bool, optional): If True and data is loaded successfully, a simple plot is generated using matplotlib.
-            Defaults to True.
+        file_name (str or Path, optional): The path to the data file (.dta, .dsc,
+            .spc, .par) or a directory. If None or a directory, a file
+            browser is shown. Defaults to None (opens browser in cwd).
+        scaling (str, optional): A string containing characters to specify
+            scaling operations (only for Bruker files):
+            'n': Divide by number of scans (AVGS/JSD).
+            'P': Divide by sqrt of MW power in mW (MWPW/MP).
+            'G': Divide by receiver gain (RCAG/RRG).
+            'T': Multiply by temperature in Kelvin (STMP/TE).
+            'c': Divide by conversion/sampling time in ms (SPTP/RCT).
+            Defaults to "".
+        plot_if_possible (bool, optional): If True and data is loaded
+            successfully, a simple plot is generated using matplotlib.
+            Defaults to True. Set to False to suppress plotting.
 
     Returns:
-        tuple:
-            - x (np.ndarray or list of np.ndarray): Abscissa data (or list for 2D).
-            - y (np.ndarray): Ordinate data.
-            - pars (dict): Dictionary of parameters from the descriptor/parameter file.
-            - file_path (str): The full path of the loaded file.
+        tuple: Depending on success:
+            - On success: (x, y, Pars, file_path)
+              - x: Abscissa data (numpy array or list of arrays for 2D).
+              - y: Ordinate data (numpy array).
+              - Pars: Dictionary of parameters from the descriptor/parameter file.
+              - file_path: The full path of the loaded file.
             - On failure (e.g., user cancel, file error): (None, None, None, None)
 
     Raises:
         FileNotFoundError: If the specified file or directory does not exist.
-        ValueError: If the file format is unsupported, scaling is invalid, or parameter inconsistencies are found.
+        ValueError: If the file format is unsupported, scaling is invalid,
+                    or parameter inconsistencies are found.
         IOError: If there are problems reading files.
     """
     x, y, pars, loaded_file_path = None, None, None, None # Initialize outputs
@@ -145,6 +150,7 @@ def eprload(file_name=None, scaling="", plot_if_possible=True):
     except (FileNotFoundError, ValueError, IOError, NotImplementedError) as e:
         # Catch errors from loading functions
         warnings.warn(f"Failed to load data from {file_path}: {e}")
+        # Return None tuple on error, matching MATLAB's empty cell behavior on error/cancel
         return None, None, None, None
     except Exception as e:
         # Catch unexpected errors
@@ -155,6 +161,7 @@ def eprload(file_name=None, scaling="", plot_if_possible=True):
 
 
     # --- Plotting (Optional) ---
+    # Mimic MATLAB's nargout==0 behavior by plotting if requested and successful
     if plot_if_possible and y is not None and x is not None:
         _plot_data(x, y, loaded_file_path, pars)
         
@@ -174,7 +181,7 @@ def _plot_data(
         return
 
     fig, ax = plt.subplots()
-    plot_title = Path(file_name).name
+    plot_title = os.path.basename(file_name)
     ax.set_title(plot_title, fontsize=10) # Use smaller font for title
 
     # --- 1D Data Plotting ---
@@ -186,8 +193,8 @@ def _plot_data(
             x_label = "Index"
             x_unit = "points"
         else:
-            x_label = params.get('XAXIS_NAME')
-            x_unit = params.get('XAXIS_UNIT') if params else 'a.u.'
+            x_label = "Abscissa"
+            x_unit = params.get('_Abscissa_Units', 'a.u.') if params else 'a.u.'
             if isinstance(x_unit, list): # Use first unit if list provided for 1D
                 x_unit = x_unit[0]
             if x_unit: x_label += f" ({x_unit})"
@@ -217,15 +224,15 @@ def _plot_data(
         x_label = f"Index ({nx} points)"
         y_label = f"Index ({ny} points)"
 
-        x_units_list = [params.get('XAXIS_UNIT'),params.get('YAXIS_UNIT')] if params else None
+        x_units_list = params.get('_Abscissa_Units') if params else None
 
         if isinstance(x, list) and len(x) >= 2:
             # Assume x = [x_axis, y_axis, ...]
             x_axis, y_axis = x[0], x[1]
             if isinstance(x_axis, np.ndarray) and x_axis.size == nx:
                 x_coords = x_axis
-                x_unit = params['XAXIS_UNIT'] if isinstance(x_units_list, list) and len(x_units_list) > 0 else 'a.u.'
-                x_label = params.get('XAXIS_NAME')+ f"({x_unit})"
+                x_unit = params['XUNI'] if isinstance(x_units_list, list) and len(x_units_list) > 0 else 'a.u.'
+                x_label = f"X Axis ({x_unit})"
             if isinstance(y_axis, np.ndarray) and y_axis.size == ny:
                 y_coords = y_axis
                 y_unit = x_units_list[1] if isinstance(x_units_list, list) and len(x_units_list) > 1 else 'a.u.'

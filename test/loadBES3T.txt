@@ -178,7 +178,6 @@ def load(full_base_name: Path, file_extension: str, scaling: str) -> tuple:
     if n_data_values > 1:
          warnings.warn(f"DSC file indicates {n_data_values} data values per point (IKKF). Only reading the first value.")
          # Adjust logic here if multiple channels need reading/combining
-         
 
     data = get_matrix(dta_file, dimensions, number_format, byte_order, is_complex[0])
 
