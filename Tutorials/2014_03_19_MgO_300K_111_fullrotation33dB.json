@@ -4,142 +4,158 @@
         "conversion_info": {
             "value": {
                 "converter_script": "fair_converter.py",
-                "conversion_timestamp": "2025-05-12T23:17:42.530281",
+                "conversion_timestamp": "2025-05-23T11:01:35.499187",
                 "eprload_version": "unknown"
             },
             "unit": "",
             "description": "Information about the conversion process to FAIR format."
         },
-        "operating_system_esp": {
-            "value": "Format",
-            "unit": "",
-            "description": "Indicates file origin (DOS/Windows vs Unix) affecting endianness (ESP)."
-        },
-        "total_points_esp": {
+        "total_number_of_points": {
             "value": 75776,
-            "unit": "points",
-            "description": "Total number of data points in the file (ESP). Useful for consistency check."
+            "unit": null,
+            "description": "Total number of data points in the dataset (e.g., X_points * Y_points for 2D)."
         },
-        "status_flags_esp": {
+        "data_axis_minimum_value_defined": {
+            "value": -20505.589844,
+            "unit": "G",
+            "description": "Defined minimum value of the data axis. For 2D, this may relate to the full range of the ADC for the linearized 2D data block or a display default. Actual swept range per dimension is derived from other parameters."
+        },
+        "data_axis_maximum_value_defined": {
+            "value": 24769.074219,
+            "unit": "G",
+            "description": "Defined maximum value of the data axis. For 2D, this may relate to the full range of the ADC for the linearized 2D data block or a display default. Actual swept range per dimension is derived from other parameters."
+        },
+        "jcamp_spectral_data_structure_parameter": {
             "value": 4096,
-            "unit": "",
-            "description": "Job and Spectrometer Status flags (bit-encoded) (ESP). Indicates complex, 2D, etc."
+            "unit": null,
+            "description": "JCAMP-DX parameter related to spectral data structure. For 1D, spectrum status. For 2D, might be points in first dimension (e.g. F2 size) or data block size."
         },
-        "scanned_size_x_esp": {
+        "number_of_points_x_dimension": {
             "value": 2048,
-            "unit": "points",
-            "description": "Number of points acquired along X dimension (ESP, often pulse)."
+            "unit": null,
+            "description": "Number of data points in the X-dimension (often the directly acquired dimension or F2)."
         },
-        "scanned_size_y_esp": {
+        "number_of_points_y_dimension": {
             "value": 37,
-            "unit": "points",
-            "description": "Number of points acquired along Y dimension (ESP, often pulse)."
+            "unit": null,
+            "description": "Number of data points in the Y-dimension (often the indirectly acquired dimension or F1)."
         },
-        "pulse_axis_x_start_esp": {
+        "x_dimension_axis_start_value": {
             "value": 3000.0,
-            "unit": "unit_from_XXUN",
-            "description": "Start value for X axis in pulse experiments (ESP)."
+            "unit": null,
+            "description": "Start value for the X-dimension axis."
         },
-        "pulse_axis_x_width_esp": {
+        "x_dimension_axis_sweep_width": {
             "value": 700.0,
-            "unit": "unit_from_XXUN",
-            "description": "Width/range for X axis in pulse experiments (ESP)."
+            "unit": null,
+            "description": "Sweep width for the X-dimension axis."
         },
-        "pulse_axis_y_start_esp": {
+        "y_dimension_axis_start_value": {
             "value": 0.0,
-            "unit": "unit_from_XYUN",
-            "description": "Start value for Y axis in 2D pulse experiments (ESP)."
+            "unit": null,
+            "description": "Start value for the Y-dimension axis."
         },
-        "pulse_axis_y_width_esp": {
+        "y_dimension_axis_sweep_width": {
             "value": 180.0,
-            "unit": "unit_from_XYUN",
-            "description": "Width/range for Y axis in 2D pulse experiments (ESP)."
+            "unit": null,
+            "description": "Sweep width for the Y-dimension axis."
         },
-        "pulse_axis_x_unit_esp": {
+        "x_dimension_axis_unit": {
             "value": "G",
-            "unit": "",
-            "description": "Unit for X axis in pulse experiments (ESP)."
+            "unit": null,
+            "description": "Unit for the X-dimension axis (e.g., 'G' for Gauss)."
         },
-        "pulse_axis_y_unit_esp": {
+        "y_dimension_axis_unit": {
             "value": "deg",
-            "unit": "",
-            "description": "Unit for Y axis in pulse experiments (ESP)."
+            "unit": null,
+            "description": "Unit for the Y-dimension axis (e.g., 'dB' for decibels)."
         },
-        "experiment_type_esp": {
+        "instrument_manufacturer_jcamp": {
+            "value": "Bruker BioSpin GmbH",
+            "unit": null,
+            "description": "JCAMP-DX originating system or instrument manufacturer."
+        },
+        "acquisition_date_jcamp": {
+            "value": "19-Mar-2014",
+            "unit": null,
+            "description": "JCAMP-DX date of data acquisition (DD/Mon/YYYY)."
+        },
+        "acquisition_time_jcamp": {
+            "value": "11:09",
+            "unit": null,
+            "description": "JCAMP-DX time of data acquisition (HH:MM)."
+        },
+        "x_dimension_experiment_type_jcamp": {
             "value": "field-sweep",
-            "unit": "",
-            "description": "Primary experiment type declared in ESP (e.g., 'field-sweep', 'ENDOR', 'time-sweep')."
+            "unit": null,
+            "description": "JCAMP-DX experiment type for the X-dimension (e.g., 'field-sweep')."
         },
-        "experiment_axis_y_esp": {
+        "y_dimension_experiment_type_jcamp": {
             "value": "angle-sweep",
-            "unit": "",
-            "description": "Parameter varied along the Y-axis in ESP (e.g., 'frequency-sweep', 'mw-power-sweep')."
+            "unit": null,
+            "description": "JCAMP-DX experiment type for the Y-dimension (e.g., 'mw-power-sweep')."
         },
-        "resolution_x_esp": {
+        "number_of_points_x_dimension_alias_res": {
             "value": 2048,
-            "unit": "points",
-            "description": "Number of points along the X axis (older ESP name)."
+            "unit": null,
+            "description": "Number of points in the X-dimension (Bruker 'RES' parameter, typically equals SSX)."
         },
-        "resolution_y_esp": {
+        "number_of_points_y_dimension_alias_rey": {
             "value": 37,
-            "unit": "points",
-            "description": "Number of points along the Y axis (older ESP name)."
+            "unit": null,
+            "description": "Number of points in the Y-dimension (Bruker 'REY' parameter, typically equals SSY)."
         },
-        "num_scans_done": {
-            "value": 1,
-            "unit": "",
-            "description": "Number of scans *actually performed* (ESP)."
-        },
-        "field_center": {
+        "x_dimension_magnetic_field_center": {
             "value": 3350.0,
             "unit": "G",
-            "description": "Center magnetic field for the sweep (ESP)."
+            "description": "Center of the magnetic field sweep (typically for the X-dimension)."
         },
-        "field_sweep_width": {
+        "x_dimension_magnetic_field_sweep_width": {
             "value": 700.0,
             "unit": "G",
-            "description": "Magnetic field sweep width (ESP). Total range = HSW."
+            "description": "Width of the magnetic field sweep (typically for the X-dimension)."
         },
-        "conversion_time": {
+        "receiver_conversion_time": {
             "value": 20.48,
             "unit": "ms",
-            "description": "ADC conversion time per point (ESP)."
+            "description": "Analog-to-digital conversion time per data point."
         },
         "receiver_time_constant": {
             "value": 10.24,
-            "unit": "s",
-            "description": "Receiver time constant (filter setting) (BES3T)."
+            "unit": "ms",
+            "description": "Time constant of the receiver signal filter."
         },
-        "receiver_gain_counts": {
+        "receiver_gain": {
             "value": 31697.86,
-            "unit": "",
-            "description": "Receiver gain setting (ESP, often linear arbitrary counts)."
+            "unit": null,
+            "description": "Overall gain of the receiver (often a relative value or code)."
         },
-        "receiver_mode": {
+        "magnetic_field_modulation_amplitude": {
             "value": 1.0,
-            "unit": "",
-            "description": "Receiver mode (e.g., Quadrature, In-Phase)."
+            "unit": "G",
+            "description": "Amplitude of the magnetic field modulation (typically peak-to-peak)."
         },
-        "modulation_frequency": {
+        "microwave_frequency": {
             "value": 9.399263,
-            "unit": "Hz",
-            "description": "Field modulation frequency setting."
+            "unit": "GHz",
+            "description": "Microwave frequency (ESP)."
         },
-        "microwave_power_at_sample": {
-            "value": 0.1001,
-            "unit": "mW",
-            "description": "Microwave power *estimated* at the sample (ESP/WinEPR). Often calculated based on bridge attenuation and source power. Calibration is usually required for accuracy."
+        "microwave_power_attenuation_setting_initial": {
+            "value": 33.0,
+            "unit": "dB",
+            "description": "Microwave power attenuation setting in dB, relative to maximum source power. For power sweeps (2D), this is often the initial attenuation value for the Y-dimension."
         }
     },
     "unmapped_parameters": {
-        "MIN": -20505.589844,
-        "MAX": 24769.074219,
-        "JON": "Bruker BioSpin GmbH",
-        "JDA": "19-Mar-2014",
-        "JTM": "11:09",
+        "DOS": "Format",
         "JRE": "c:\\program files\\bruker emx\\syscal_old\\emx1240\\er4102st\\4102st130710.cal",
-        "MPD": 33.0,
+        "JSD": 1,
+        "MP": 0.1001,
         "GAN": 0.0,
-        "GANS": 5.0
+        "GANS": 5.0,
+        "XAXIS_NAME": "field-sweep",
+        "XAXIS_UNIT": "G",
+        "YAXIS_NAME": "angle-sweep",
+        "YAXIS_UNIT": "deg"
     }
 }

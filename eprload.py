@@ -1,12 +1,13 @@
 # eprload.py
 
 import os
+import sys
+import warnings
 from pathlib import Path
 import tkinter as tk
 from tkinter import filedialog
-import numpy as np
+import numpy as np 
 import matplotlib.pyplot as plt
-import warnings
 from typing import Dict, Any, Tuple, Optional, Union, List
 
 # Make sure the 'sub' directory is importable
@@ -27,7 +28,7 @@ except ImportError:
         sys.exit(1)
 
 
-def eprload(file_name=None, scaling="", plot_if_possible=True):
+def eprload(file_name=None, scaling="", plot_if_possible=True, save_if_possible=False):
     """
     Load experimental EPR data from Bruker BES3T or ESP formats.
 
@@ -156,7 +157,7 @@ def eprload(file_name=None, scaling="", plot_if_possible=True):
 
     # --- Plotting (Optional) ---
     if plot_if_possible and y is not None and x is not None:
-        _plot_data(x, y, loaded_file_path, pars)
+        _plot_data(x, y, loaded_file_path, pars, save_if_possible=save_if_possible)
         
     # --- Return Results ---
     # Always return the full tuple, even if some elements are None (e.g., on error)
@@ -166,7 +167,8 @@ def _plot_data(
     x: Union[np.ndarray, List[np.ndarray], None],
     y: Optional[np.ndarray],
     file_name: str,
-    params: Optional[Dict[str, Any]] = None
+    params: Optional[Dict[str, Any]] = None,
+    save_if_possible: bool = False
 ) -> None:
     """Helper function to plot the loaded EPR data using Matplotlib."""
     if y is None or y.size == 0:
@@ -218,18 +220,18 @@ def _plot_data(
         y_label = f"Index ({ny} points)"
 
         x_units_list = [params.get('XAXIS_UNIT'),params.get('YAXIS_UNIT')] if params else None
-
+    
         if isinstance(x, list) and len(x) >= 2:
             # Assume x = [x_axis, y_axis, ...]
             x_axis, y_axis = x[0], x[1]
             if isinstance(x_axis, np.ndarray) and x_axis.size == nx:
                 x_coords = x_axis
-                x_unit = params['XAXIS_UNIT'] if isinstance(x_units_list, list) and len(x_units_list) > 0 else 'a.u.'
+                x_unit = params.get('XAXIS_UNIT') #if isinstance(x_units_list, list) and len(x_units_list) > 0 else 'a.u.'
                 x_label = params.get('XAXIS_NAME')+ f"({x_unit})"
             if isinstance(y_axis, np.ndarray) and y_axis.size == ny:
                 y_coords = y_axis
-                y_unit = x_units_list[1] if isinstance(x_units_list, list) and len(x_units_list) > 1 else 'a.u.'
-                y_label = f"Y Axis ({y_unit})"
+                y_unit = params.get('YAXIS_UNIT') if isinstance(x_units_list, list) and len(x_units_list) > 1 else 'a.u.'
+                y_label = params.get('YAXIS_NAME')+ f"({y_unit})"
 
         elif isinstance(x, np.ndarray) and x.size == nx:
             # Only x-axis provided for 2D plot
@@ -260,6 +262,12 @@ def _plot_data(
         return # Don't show empty plot
 
     plt.tight_layout()
+    if save_if_possible:
+        # Save the figure if requested
+        print(file_name)
+        save_path = Path(file_name).with_suffix('.png') # Save as PNG
+        fig.savefig(save_path, dpi=300)
+        print(f"Plot saved to {save_path}")
     plt.show()
 
 
@@ -282,7 +290,7 @@ if __name__ == "__main__":
         print(f"Number of parameters loaded: {len(parameters)}")
         # print("Parameters:", parameters) # Uncomment to see all parameters
         # Example accessing a parameter:
-        mw_freq = parameters.get('MWFQ', 'N/A') # Get MW frequency if available
+        mw_freq = parameters.get('MWFQ',  'N/A') # Get MW frequency if available
         print(f"Microwave Frequency (MWFQ): {mw_freq}")
     else:
         print("Loading failed or was cancelled.")

@@ -210,7 +210,7 @@ def load(full_base_name: Path, file_extension: str, scaling: str) -> tuple:
     dimensions = [nx, ny, 1] # Use [nx, ny, nz=1] for get_matrix
 
     # --- Read Data File ---
-    print(file_type)
+   
     data = get_matrix(spc_file, dimensions, number_format_code, endian, is_complex)
 
     # --- Scale Data ---

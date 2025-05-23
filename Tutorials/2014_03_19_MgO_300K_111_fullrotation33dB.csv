@@ -1,8 +1,8 @@
 # EPR Data Export
 # Original File:,/Users/sylvainbertaina/Documents/Cloud_CNRS/GitHub/EPyRTools/Tutorials/2014_03_19_MgO_300K_111_fullrotation33dB.par
-# Microwave_Frequency:,N/A
-# Field_Center/Start:,3350.0 G
-# Field_Sweep/Increment:,700.0 G
+# Microwave_Frequency:,9.399263 GHz
+# Field_Center/Start:,N/A
+# Field_Sweep/Increment:,N/A
 # Data_Shape:,"(37, 2048)"
 # Data_Type:,float32
 # ---

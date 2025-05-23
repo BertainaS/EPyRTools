@@ -51,7 +51,7 @@ def read_par_file(par_file_path: Path) -> dict:
     if parameters.get('JEY'): parameters['YAXIS_NAME'] = parameters['JEY']
     if parameters.get('XYUN'): parameters['YAXIS_UNIT'] = parameters['XYUN']
     
-           
+   
 
     return parameters
 
@@ -112,6 +112,10 @@ def read_dsc_file(dsc_file_path: Path) -> dict:
     if parameters.get('XNAM'):
         parameters['XAXIS_NAME'] = parameters['XNAM']
         parameters['XAXIS_UNIT'] = parameters['XUNI']
+    if parameters.get('YNAM'):
+        parameters['YAXIS_NAME'] = parameters['YNAM']
+        parameters['YAXIS_UNIT'] = parameters['YUNI']
+
         
     return parameters
 
@@ -242,3 +246,26 @@ def get_matrix(
         ) from e
 
     return data
+
+def BrukerListFiles(path, recursive=False):
+    """
+    List all Bruker EPR data files (.DTA, .dta, .SPC, .spc) in the given directory.
+
+    Args:
+        path (str or Path): Path to the folder containing Bruker files.
+        recursive (bool, optional): If True, search subfolders recursively. Defaults to False.
+
+    Returns:
+        list[Path]: Sorted list of Path objects for found files.
+    """
+    exts = {".dta", ".DTA", ".spc", ".SPC"}
+    path = Path(path)
+    if not path.is_dir():
+        raise NotADirectoryError(f"{path} is not a valid directory.")
+
+    if recursive:
+        files = [p for p in path.rglob('*') if p.suffix in exts and p.is_file()]
+    else:
+        files = [p for p in path.iterdir() if p.suffix in exts and p.is_file()]
+
+    return sorted(files)
